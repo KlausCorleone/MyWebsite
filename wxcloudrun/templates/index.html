@@ -258,6 +258,29 @@
         <button id="hello-btn" style="width: 200px; height: 40px; font-size: 16px;">点击显示信息哦</button>
         <p id="hello-text" style="margin-top: 12px; color: #07c160;"></p>
       </div>
+
+
+
+      <input type="text" id="user-input" placeholder="输入文字">
+      <button onclick="hashInput()">哈希值生成</button>
+      <div id="hash-result"></div>
+
+      <script>
+      function hashInput() {
+          let text = document.getElementById('user-input').value;
+          $.ajax({
+              url: '/api/hash',     // 新增的接口
+              method: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ text: text }),
+              success: function(res) {
+                  if(res.data) {
+                      document.getElementById('hash-result').innerText = res.data;
+                  }
+              }
+          });
+      }
+      </script>
       <div class="card" style="width: 320px; margin-bottom: 48px;">
         <div class="card-body">
           <img class="qrcode middle"
