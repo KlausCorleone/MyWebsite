@@ -5,6 +5,9 @@ from wxcloudrun.dao import delete_counterbyid, query_counterbyid, insert_counter
 from wxcloudrun.model import Counters
 from wxcloudrun.response import make_succ_empty_response, make_succ_response, make_err_response
 
+import hashlib
+
+
 
 @app.route('/')
 def index():
@@ -64,3 +67,14 @@ def get_count():
     """
     counter = Counters.query.filter(Counters.id == 1).first()
     return make_succ_response(0) if counter is None else make_succ_response(counter.count)
+
+
+@app.route('/api/hash', methods=['POST'])
+def hash_text():
+    params = request.get_json()
+    if 'text' not in params:
+        return make_err_response("缺少 text 参数")
+    text = params['text']
+    # 计算 SHA256 哈希
+    hash_val = hashlib.sha256(text.encode('utf-8')).hexdigest()
+    return make_succ_response(hash_val)
